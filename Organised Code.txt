@@ -1,0 +1,454 @@
+Materials and Methods:
+
+1) Create directory 'data', 'src', 'results' in a CA2 folder
+(base) weiqi@LSLab5-22:~$ cd Desktop
+(base) weiqi@LSLab5-22:~/Desktop$ cd CA2
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ mkdir data src results
+
+2) Download relevant packages
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install curl
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install fastqc
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install trimmomatic
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install picard-tools
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install bowtie bowtie2
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install samtools
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install libbz2-dev
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install zlib1g-dev
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install libncurses5-dev 
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install libncursesw5-dev
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ sudo apt-get install liblzma-dev
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ wget https://github.com/samtools/samtools/releases/download/1.9/(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools-1.9.tar.bz2
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ tar -vxjf samtools-1.9.tar.bz2
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ cd samtools-1.9
+(base) weiqi@LSLab5-22:~/Desktop/CA2/samtools-1.9$ make
+(base) weiqi@LSLab5-22:~/Desktop/CA2/samtools-1.9$ sudo make install
+(base) weiqi@LSLab5-22:~/Desktop/CA2/samtools-1.9$ sudo apt-get install bedtools
+
+3) Download mutated yeast (A0158131M.tgz) from nBox and put it in data folder
+
+4) Prepare data by extracting out all the files from the "tarball"
+(base) weiqi@LSLab5-22:~/Desktop/CA2/samtools-1.9$ cd ../data
+(base) weiqi@LSLab5-22:~/Desktop/CA2/data$ tar -zxvf A0158131M.tgz
+A0158131M_1.fq
+A0158131M_2.fq
+ 
+5) Quality control - Assessing quality using FastQC
+(base) weiqi@LSLab5-22:~/Desktop/CA2/data$ cd ../results
+(base) weiqi@LSLab5-22:~/Desktop/CA2/results$ mkdir fastqc
+(base) weiqi@LSLab5-22:~/Desktop/CA2/results$ cd ../
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ fastqc data/*.fq -o results/fastqc
+Started analysis of A0158131M_1.fq
+Approx 5% complete for A0158131M_1.fq
+Approx 10% complete for A0158131M_1.fq
+Approx 15% complete for A0158131M_1.fq
+Approx 20% complete for A0158131M_1.fq
+Approx 25% complete for A0158131M_1.fq
+Approx 30% complete for A0158131M_1.fq
+Approx 35% complete for A0158131M_1.fq
+Approx 40% complete for A0158131M_1.fq
+Approx 45% complete for A0158131M_1.fq
+Approx 50% complete for A0158131M_1.fq
+Approx 55% complete for A0158131M_1.fq
+Approx 60% complete for A0158131M_1.fq
+Approx 65% complete for A0158131M_1.fq
+Approx 70% complete for A0158131M_1.fq
+Approx 75% complete for A0158131M_1.fq
+Approx 80% complete for A0158131M_1.fq
+Approx 85% complete for A0158131M_1.fq
+Approx 90% complete for A0158131M_1.fq
+Approx 95% complete for A0158131M_1.fq
+Analysis complete for A0158131M_1.fq
+Started analysis of A0158131M_2.fq
+Approx 5% complete for A0158131M_2.fq
+Approx 10% complete for A0158131M_2.fq
+Approx 15% complete for A0158131M_2.fq
+Approx 20% complete for A0158131M_2.fq
+Approx 25% complete for A0158131M_2.fq
+Approx 30% complete for A0158131M_2.fq
+Approx 35% complete for A0158131M_2.fq
+Approx 40% complete for A0158131M_2.fq
+Approx 45% complete for A0158131M_2.fq
+Approx 50% complete for A0158131M_2.fq
+Approx 55% complete for A0158131M_2.fq
+Approx 60% complete for A0158131M_2.fq
+Approx 65% complete for A0158131M_2.fq
+Approx 70% complete for A0158131M_2.fq
+Approx 75% complete for A0158131M_2.fq
+Approx 80% complete for A0158131M_2.fq
+Approx 85% complete for A0158131M_2.fq
+Approx 90% complete for A0158131M_2.fq
+Approx 95% complete for A0158131M_2.fq
+Analysis complete for A0158131M_2.fq
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ cd results/fastqc
+(base) weiqi@LSLab5-22:~/Desktop/CA2/results/fastqc$ for filename in *.zip; do unzip $filename; done
+Archive:  A0158131M_1_fastqc.zip
+   creating: A0158131M_1_fastqc/
+   creating: A0158131M_1_fastqc/Icons/
+   creating: A0158131M_1_fastqc/Images/
+  inflating: A0158131M_1_fastqc/Icons/fastqc_icon.png  
+  inflating: A0158131M_1_fastqc/Icons/warning.png  
+  inflating: A0158131M_1_fastqc/Icons/error.png  
+  inflating: A0158131M_1_fastqc/Icons/tick.png  
+  inflating: A0158131M_1_fastqc/summary.txt  
+  inflating: A0158131M_1_fastqc/Images/per_base_quality.png  
+  inflating: A0158131M_1_fastqc/Images/per_sequence_quality.png  
+  inflating: A0158131M_1_fastqc/Images/per_base_sequence_content.png  
+  inflating: A0158131M_1_fastqc/Images/per_sequence_gc_content.png  
+  inflating: A0158131M_1_fastqc/Images/per_base_n_content.png  
+  inflating: A0158131M_1_fastqc/Images/sequence_length_distribution.png  
+  inflating: A0158131M_1_fastqc/Images/duplication_levels.png  
+  inflating: A0158131M_1_fastqc/Images/adapter_content.png  
+  inflating: A0158131M_1_fastqc/Images/kmer_profiles.png  
+  inflating: A0158131M_1_fastqc/fastqc_report.html  
+  inflating: A0158131M_1_fastqc/fastqc_data.txt  
+  inflating: A0158131M_1_fastqc/fastqc.fo  
+Archive:  A0158131M_2_fastqc.zip
+   creating: A0158131M_2_fastqc/
+   creating: A0158131M_2_fastqc/Icons/
+   creating: A0158131M_2_fastqc/Images/
+  inflating: A0158131M_2_fastqc/Icons/fastqc_icon.png  
+  inflating: A0158131M_2_fastqc/Icons/warning.png  
+  inflating: A0158131M_2_fastqc/Icons/error.png  
+  inflating: A0158131M_2_fastqc/Icons/tick.png  
+  inflating: A0158131M_2_fastqc/summary.txt  
+  inflating: A0158131M_2_fastqc/Images/per_base_quality.png  
+  inflating: A0158131M_2_fastqc/Images/per_sequence_quality.png  
+  inflating: A0158131M_2_fastqc/Images/per_base_sequence_content.png  
+  inflating: A0158131M_2_fastqc/Images/per_sequence_gc_content.png  
+  inflating: A0158131M_2_fastqc/Images/per_base_n_content.png  
+  inflating: A0158131M_2_fastqc/Images/sequence_length_distribution.png  
+  inflating: A0158131M_2_fastqc/Images/duplication_levels.png  
+  inflating: A0158131M_2_fastqc/Images/adapter_content.png  
+  inflating: A0158131M_2_fastqc/Images/kmer_profiles.png  
+  inflating: A0158131M_2_fastqc/fastqc_report.html  
+  inflating: A0158131M_2_fastqc/fastqc_data.txt  
+  inflating: A0158131M_2_fastqc/fastqc.fo  
+
+-check for pass fail: no failed results; good.
+(base) weiqi@LSLab5-22:~/Desktop/CA2/results/fastqc$ cd ../..
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ mkdir -p docs
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ cat results/fastqc/*/summary.txt > docs/fastq_summaries.txt
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ grep FAIL docs/fastq_summaries.txt
+
+-open html file, kmer warning, not important so decided not to trim (skipped Quality Control - trimming and/or filtering reads, not necessary for this case)
+
+6) Align reads to reference genome - prepare by downloading yeast genome (sacCer.fa) and transposon (ty5_6p.fa) from IVLE, and put it in data
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ mkdir combined
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ mkdir -p results/sam results/bam results/bcf results/vcf
+
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ bowtie2-build 'data/sacCer3.fa,data/ty5_6p.fa' combine.indexing
+Settings:
+  Output files: "combine.indexing.*.bt2"
+  Line rate: 6 (line is 64 bytes)
+  Lines per side: 1 (side is 64 bytes)
+  Offset rate: 4 (one in 16)
+  FTable chars: 10
+  Strings: unpacked
+  Max bucket size: default
+  Max bucket size, sqrt multiplier: default
+  Max bucket size, len divisor: 4
+  Difference-cover sample period: 1024
+  Endianness: little
+  Actual local endianness: little
+  Sanity checking: disabled
+  Assertions: disabled
+  Random seed: 0
+  Sizeofs: void*:8, int:4, long:8, size_t:8
+Input files DNA, FASTA:
+  data/sacCer3.fa
+  data/ty5_6p.fa
+Building a SMALL index
+Reading reference sizes
+  Time reading reference sizes: 00:00:01
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+bmax according to bmaxDivN setting: 3019189
+Using parameters --bmax 2264392 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 2264392 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 1.20768e+07 (target: 2264391)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 12076759 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:02
+Returning block of 12076760 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 3731901
+fchr[G]: 6046829
+fchr[T]: 8357132
+fchr[$]: 12076759
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 8220427 bytes to primary EBWT file: combine.indexing.1.bt2
+Wrote 3019196 bytes to secondary EBWT file: combine.indexing.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 12076759
+    bwtLen: 12076760
+    sz: 3019190
+    bwtSz: 3019190
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 754798
+    offsSz: 3019192
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 62900
+    numLines: 62900
+    ebwtTotLen: 4025600
+    ebwtTotSz: 4025600
+    color: 0
+    reverse: 0
+Total time for call to driver() for forward index: 00:00:04
+Reading reference sizes
+  Time reading reference sizes: 00:00:00
+Calculating joined length
+Writing header
+Reserving space for joined string
+Joining reference sequences
+  Time to join reference sequences: 00:00:00
+  Time to reverse reference sequence: 00:00:00
+bmax according to bmaxDivN setting: 3019189
+Using parameters --bmax 2264392 --dcv 1024
+  Doing ahead-of-time memory usage test
+  Passed!  Constructing with these parameters: --bmax 2264392 --dcv 1024
+Constructing suffix-array element generator
+Building DifferenceCoverSample
+  Building sPrime
+  Building sPrimeOrder
+  V-Sorting samples
+  V-Sorting samples time: 00:00:00
+  Allocating rank array
+  Ranking v-sort output
+  Ranking v-sort output time: 00:00:00
+  Invoking Larsson-Sadakane on ranks
+  Invoking Larsson-Sadakane on ranks time: 00:00:00
+  Sanity-checking and returning
+Building samples
+Reserving space for 12 sample suffixes
+Generating random suffixes
+QSorting 12 sample offsets, eliminating duplicates
+QSorting sample offsets, eliminating duplicates time: 00:00:00
+Multikey QSorting 12 samples
+  (Using difference cover)
+  Multikey QSorting samples time: 00:00:00
+Calculating bucket sizes
+Splitting and merging
+  Splitting and merging time: 00:00:00
+Avg bucket size: 1.20768e+07 (target: 2264391)
+Converting suffix-array elements to index image
+Allocating ftab, absorbFtab
+Entering Ebwt loop
+Getting block 1 of 1
+  No samples; assembling all-inclusive block
+  Sorting block of length 12076759 for bucket 1
+  (Using difference cover)
+  Sorting block time: 00:00:02
+Returning block of 12076760 for bucket 1
+Exited Ebwt loop
+fchr[A]: 0
+fchr[C]: 3731901
+fchr[G]: 6046829
+fchr[T]: 8357132
+fchr[$]: 12076759
+Exiting Ebwt::buildToDisk()
+Returning from initFromVector
+Wrote 8220427 bytes to primary EBWT file: combine.indexing.rev.1.bt2
+Wrote 3019196 bytes to secondary EBWT file: combine.indexing.rev.2.bt2
+Re-opening _in1 and _in2 as input streams
+Returning from Ebwt constructor
+Headers:
+    len: 12076759
+    bwtLen: 12076760
+    sz: 3019190
+    bwtSz: 3019190
+    lineRate: 6
+    offRate: 4
+    offMask: 0xfffffff0
+    ftabChars: 10
+    eftabLen: 20
+    eftabSz: 80
+    ftabLen: 1048577
+    ftabSz: 4194308
+    offsLen: 754798
+    offsSz: 3019192
+    lineSz: 64
+    sideSz: 64
+    sideBwtSz: 48
+    sideBwtLen: 192
+    numSides: 62900
+    numLines: 62900
+    ebwtTotLen: 4025600
+    ebwtTotSz: 4025600
+    color: 0
+    reverse: 1
+Total time for backward call to driver() for mirror index: 00:00:03
+
+-put combine.indexing into combined file
+-next, prepare 3 bash(.sh) scripts and put them in src folder
+
+-Align paired-ends to reference genome
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ bash src/run-bowtie2.sh
+working to /home/weiqi/Desktop/CA2
+running data
+1208690 reads; of these:
+  1208690 (100.00%) were paired; of these:
+    1101 (0.09%) aligned concordantly 0 times
+    1127574 (93.29%) aligned concordantly exactly 1 time
+    80015 (6.62%) aligned concordantly >1 times
+    ----
+    1101 pairs aligned concordantly 0 times; of these:
+      13 (1.18%) aligned discordantly 1 time
+    ----
+    1088 pairs aligned 0 times concordantly or discordantly; of these:
+      2176 mates make up the pairs; of these:
+        1785 (82.03%) aligned 0 times
+        89 (4.09%) aligned exactly 1 time
+        302 (13.88%) aligned >1 times
+99.93% overall alignment rate
+
+-convert SAM file format to BAM file format
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ bash src/convert-to-bam.sh
+data
+
+-sort BAM file by coordinates
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ bash src/sort-bam-files.sh
+data
+
+-learn more about the BAM file
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools flagstat results/bam/data-sorted.bam
+2417380 + 0 in total (QC-passed reads + QC-failed reads)
+0 + 0 secondary
+0 + 0 supplementary
+0 + 0 duplicates
+2415595 + 0 mapped (99.93% : N/A)
+2417380 + 0 paired in sequencing
+1208690 + 0 read1
+1208690 + 0 read2
+2415178 + 0 properly paired (99.91% : N/A)
+2415488 + 0 with itself and mate mapped
+107 + 0 singletons (0.00% : N/A)
+290 + 0 with mate mapped to a different chr
+95 + 0 with mate mapped to a different chr (mapQ>=5)
+
+-using samtools flags to eliminate those we want and don't want
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools view -h -f 1 -F 14 results/bam/data-sorted.bam | grep -e 'TY5' -e '^@' > data-sorted.sam
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ head data-sorted.sam
+@HD	VN:1.0	SO:coordinate
+@SQ	SN:chrI	LN:230218
+@SQ	SN:chrII	LN:813184
+@SQ	SN:chrIII	LN:316620
+@SQ	SN:chrIV	LN:1531933
+@SQ	SN:chrIX	LN:439888
+@SQ	SN:chrV	LN:576874
+@SQ	SN:chrVI	LN:270161
+@SQ	SN:chrVII	LN:1090940
+@SQ	SN:chrVIII	LN:562643
+
+-make into text file so can open in excel sheet to further filter, narrow down regions to find the pai-ends and insertions
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools view -h -f 1 -F 14 results/bam/data-sorted.bam | grep -e 'TY5' -e '^@' > data-sorted.txt
+
+-repeat for without header:
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools view -f 1 -F 14 results/bam/data-sorted.bam | grep -e 'TY5' -e '^@' > data-sortednoh.sam
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools view -f 1 -F 14 results/bam/data-sorted.bam | grep -e 'TY5' -e '^@' > data-sortednoh.txt
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ head data-sortednoh.sam
+chrV-71220	129	chrV	269446	40	100M	TY5	5337	0	ATTTCTTGGCAGCTTCGGTTTGTTCCTTGACAACCTTCTTGACAATTTTTAGTTCTTCGATCAAGAAAGCTCTAATAATTCTTTCCTTAACACAGTTGGC	CC@?B,2FF;<GFJJ#9+CHJJEJIFI(DEI1J9@=<BJGDJJGHIGIII(FGC@JHJJI#HIJHJ4I;IBDG:HCEC'C7(FD@+DDDCCD5@DD<DD@	AS:i:-2	XN:i:0	XM:i:1	XO:i:0	XG:i:0	NM:i:1	MD:Z:50T49	YS:i:-23	YT:Z:DP
+chrV-76154	65	chrV	269467	42	100M	TY5	5310	0	GTTCCTTGACAACCTTCTTGACAATTTTTTGTTCTTCGATCAAGAAATCTCTAATAATTCTTTCCTTAACACAGTTGGCAGATCTGGAACCACCGTAAGC	@CCFFFFDAH+HHE)JJHJJHJJJJJFJI=HJJ?GJJE)=?/JHCJH)AAJH<IFJHIICIA<HDEECHDDHD?CDIFE=(ED;D,F;DDCCEC?BEDDD	AS:i:-4	XN:i:0	XM:i:2	XO:i:0	XG:i:0	NM:i:2	MD:Z:47G32C19	YS:i:-9	YT:Z:DP
+chrV-59366	65	chrV	269500	35	100M	TY5	5290	0	CTTCGATCAAGAAAGCTCTAATAATTCTTTCCTTAACACAGTTGGCACATCTGGAACCACCGTAAGCTCTGGAAACAGTCTTGTGGGTCTTGGAAACAGT	<@@FFF:FFHHBHJJGEJJIJEJ)E:EJGJGH@JJIIJGJJ9=FJ<I?JGIIIHIJHJIJH>DIJ@DF;JE(&FCHEH8DCEBHCHDEDDDDD?CDCDBD	AS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:100	YT:Z:UP
+chrV-47696	129	chrV	269502	42	100M	TY5	5301	0	TCGATCAAGAAAGCTCTAATAATTCTTTACTTAACACAGTTGGCACATCTGGAACCACCGTGAGCTCTGGAAACAGTCTTGTGGGTCTTGGAAACAGTGG	<:CFDF;ADFHFHJHJIEJ@GIGDAIJI#GE?GJJIHJIIDI**FGIJIGJ..DDBJ;JJF/0J'JEEHC>5,@:DEFCC@BCADDCDD@C@BD7BCDD@	AS:i:-5	XN:i:0	XM:i:2	XO:i:0	XG:i:0	NM:i:2	MD:Z:28C32A38	YS:i:0	YT:Z:DP
+chrV-4686	129	chrV	269510	34	100M	TY5	142	0	GAAAGCTCTAATAATTCTTTCCTTAACACAGTTGGCACATCTGGAACCACCGTAAGCTCTGGAAACAGTCTTGTGGGTCTTGGAAACAGTGGCGTATTGT	BC@BFF,?HHDHFJCIGCGJJ+JHHHJJJFJHD@IIJIIGFJ=IIDAJGHG@HGHJJHJJJGD5HJHFFD)JD>E.DGHHCD9F5DE(@DD4?>:D<DCD	AS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:100	YT:Z:UP
+chrV-92430	129	chrV	269517	21	100M	TY5	5250	0	CTAATAATTCTTTCCTTAACACAGTTGGCACATCTGGAACCACCGTAAGCTCTAGAAACAGTCTTGTGGGTCTTGGAAACAGTGGCGTATTGTCTTGGTC	C@@FDDFFF+H+DG:JJIJJ?JIJGGAJHJJCBF4IIGDJGIJIJJHIHGEHA)HHFIDJEB3GF=>?FD48;JF9JCFDEA?(ADDDCDDD4DCDDDDA	AS:i:-2	XN:i:0	XM:i:1	XO:i:0	XG:i:0	NM:i:1	MD:Z:53G46	YT:Z:UP
+chrV-108418	65	chrV	269523	31	100M	TY5	150	0	ATTCTTTCCTTAACACAGTTGGCACATCTGGAACCACCGTAAGCTCTGGAAACAGTCTTGTGGGTCTTGGAAACAGTGGCGTATTGTCTTGGTCTCAAAG	(CCF7F@FHHF@HJJJHJHF(IIFIIIJJJJJJIJJBJIIHJJ(IHIJE8BDHIH)D=ICJFCG?:DC+(5DHHDBB@DDBDGECDEDDDED3?<@BDDB	AS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:100	YT:Z:UP
+chrV-22164	65	chrV	269523	31	100M	TY5	5268	0	ATTCTTTCCTTAACACAGTTGGCACATCTGGAACCACCGTAAGCTCTGGAAACAGTCTTGTGGGTCTTGGAAACAGTGGCGTATTGTCTTGGTCTCAAAG	@C=DDDFFFFHHHJAJIJJJJICJEIJGBIHI=IJGJIJ;JIJIHJH8IAJGI;CJH@CIHIDIDC>>IJAEE&C<FFBDJ@FDB=DEBED&D3D+CD>?	AS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:100	YT:Z:UP
+chrV-36112	129	chrV	269524	31	100M	TY5	122	0	TTCTTTCCTTAACACAGTTGGCACATCTGGAACCACCGTAAGCTCTGGAAACAGTCTTGTGGGTCTTGGAAACAGTGGCGTATTGTCTTGGTCTCAAAGT	<C8FFFFD*HDHHJIJI<DBGI1HHIJIIGJJJJBJII?IGFHCD0JJ?>3GI<JDJJJEBG=ADD=)(CFDEBEHCDFDEFHD(FDDDD>H>B<DDADD	AS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:100	YT:Z:UP
+chrV-69142	65	chrV	269536	18	100M	TY5	5243	0	CACAGTTGGCACATCTGGAACCACCGTAAGCTCTGGCAACAGTCTTGTGGGTCTTGGAAACAGTGGCGTATTGTCTTGGTCTCAAAGTAGAGATACCTTG	@=@FB2DFFHC:HJGIJG?JHI)JIHGGGJJJJJIJ)JJGJJGHIIJBJJJDGJJJCDCH,JDJJJIJHECEDE:4B(ABJ:DCFDC?DDDDD<DD3DDD	AS:i:-2	XN:i:0	XM:i:1	XO:i:0	XG:i:0	NM:i:1	MD:Z:36A63	YT:Z:UP
+
+**dk what is this for LOL
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools view -S -b data-sorted.sam > data-sorted.bam
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools view -S -b data-sortednoh.sam > data-sortednoh.bam
+[E::sam_parse1] missing SAM header
+[W::sam_read1] Parse error at line 1
+[main_samview] truncated file.
+
+**-indexed the new file??? wot
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools index data-sorted.bam
+
+7) Assess the alignment (visualisation)
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools index results/bam/data-sorted.bam
+
+-view how many reads are there
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ samtools view data-sorted.bam | wc -l
+150
+
+8) convert it into bedtools (don't use)
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ bedtools bamtobed -i data-sorted.bam > data-sorted.bed
+
+*real convert the inside bam that one
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ bedtools bamtobed -i results/bam/data-sorted.bam > results/bam/data-sorted.bed
+
+done!!!
+Note: the outside CA2 data-sorted.sam and data-sorted.txt can use. Do not use the bam file. Bed file use the one inside results/bam
+Note the difference below:
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ head data-sorted.sam
+@HD	VN:1.0	SO:coordinate
+@SQ	SN:chrI	LN:230218
+@SQ	SN:chrII	LN:813184
+@SQ	SN:chrIII	LN:316620
+@SQ	SN:chrIV	LN:1531933
+@SQ	SN:chrIX	LN:439888
+@SQ	SN:chrV	LN:576874
+@SQ	SN:chrVI	LN:270161
+@SQ	SN:chrVII	LN:1090940
+@SQ	SN:chrVIII	LN:562643
+(base) weiqi@LSLab5-22:~/Desktop/CA2$ head results/sam/data.sam
+@HD	VN:1.0	SO:unsorted
+@SQ	SN:chrI	LN:230218
+@SQ	SN:chrII	LN:813184
+@SQ	SN:chrIII	LN:316620
+@SQ	SN:chrIV	LN:1531933
+@SQ	SN:chrIX	LN:439888
+@SQ	SN:chrV	LN:576874
+@SQ	SN:chrVI	LN:270161
+@SQ	SN:chrVII	LN:1090940
+@SQ	SN:chrVIII	LN:562643
+
