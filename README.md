@@ -1,4 +1,4 @@
-# LSM3241 Genomic Data Analysis Project 2 in Linux
+# LSM3241 Genomic Data Analysis Project 2 - Bash Script
 Individual Project: Hunting for Genomic Insertions and their Consequences
 ## Objective
 The aim of this study is to identify possible alterations caused by one or more insertions of transposon
